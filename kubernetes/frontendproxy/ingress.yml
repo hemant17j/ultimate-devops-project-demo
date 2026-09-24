@@ -1,0 +1,70 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: frontend-proxy
+  namespace: default
+
+spec:
+  ingressClassName: f5-nginx
+
+  tls:
+    - hosts:
+        - app.hemantsimran.tech
+      secretName: frontend-proxy-tls
+
+  rules:
+
+    # Existing OpenTelemetry Application
+
+    - host: app.hemantsimran.tech
+
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+
+            backend:
+              service:
+                name: opentelemetry-demo-frontendproxy
+                port:
+                  number: 8080
+
+    # Argo CD Application
+
+    - host: argocd.hemantsimran.tech
+
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+
+            backend:
+              service:
+                name: argocd-proxy
+                port:
+                  number: 80
+
+    - host: grafana.hemantsimran.tech
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: monitoring-bridge
+                port:
+                  number: 8080
+
+
+    - host: prometheus.hemantsimran.tech
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: monitoring-bridge
+                port:
+                  number: 8081
+
