@@ -5,9 +5,9 @@ metadata:
   namespace: default
 spec:
   ingressClassName: f5-nginx
-
   rules:
-    - http:
+    - host: app.hemantsimran.tech
+      http:
         paths:
           - path: /
             pathType: Prefix
