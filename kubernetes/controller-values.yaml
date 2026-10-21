@@ -1,0 +1,12 @@
+
+replicaCount: 2
+
+ingressClass:
+  name: f5-nginx
+  create: true
+  setAsDefaultIngress: false
+
+service:
+  create: true
+  type: LoadBalancer
+  externalTrafficPolicy: Local
